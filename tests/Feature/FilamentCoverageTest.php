@@ -13,14 +13,16 @@ use Liberu\Accounting\CopilotFilament\Resources\CopilotRequestResource\Pages\Lis
 
 it('registers and configures accounting-copilot-filament filament resources', function (): void {
     $provider = $this->app->register(CopilotFilamentServiceProvider::class, force: true);
-    if (method_exists($provider, 'boot')) { $provider->boot(); }
+    if (method_exists($provider, 'boot')) {
+        $provider->boot();
+    }
     expect($provider)->toBeInstanceOf(CopilotFilamentServiceProvider::class);
     $plugin = CopilotFilamentPlugin::make();
     $panel = Panel::make()->id('test-accounting-copilot-filament');
     $plugin->register($panel);
     $plugin->boot($panel);
     expect($plugin->getId())->toBeString()->not->toBeEmpty();
-    $host = new ListCopilotRequests;
+    $host = new ListCopilotRequests();
     expect(CopilotRequestResource::getPages())->toBeArray();
     expect(CopilotRequestResource::getEloquentQuery())->toBeInstanceOf(Builder::class);
     expect(CopilotRequestResource::form(Schema::make($host)))->toBeInstanceOf(Schema::class);
